@@ -710,6 +710,12 @@ def item_search():
 
     # Oh god, we've got everything...lets get a list of items
     ret_items, focus, worn, inst = logic.get_items_with_filters(weights, ignore_zero, **filters)
+
+    # Show damage and delay whenever the results actually contain weapons. show_dmg_delay
+    # is otherwise set only when a Primary/Secondary/Range slot is chosen, so a search by
+    # item type (Two Hand Slash, Bow, ...) lists no damage or delay at all.
+    if not show_dmg_delay:
+        show_dmg_delay = any(getattr(e, 'damage', 0) for e in ret_items)
     return render_template('item_search_results.html', data=ret_items, reduce=reduce_restrictions,
                            show_dmg_delay=show_dmg_delay, show_focus=focus, full_detail=full_detail,
                            show_values=show_values, show_click=show_click, show_proc=show_proc, show_worn=worn,

@@ -83,13 +83,13 @@
     {% endif %}
     <th>Zone</th>
     <th>Source</th>
-    {% if show_dmg_delay and full_detail%}
+    {% if show_dmg_delay%}
       <th>Dmg</th>
     {% endif %}
-    {% if show_dmg_delay and full_detail%}
+    {% if show_dmg_delay%}
       <th>Delay</th>
     {% endif %}
-    {% if show_dmg_delay and full_detail%}
+    {% if show_dmg_delay%}
       <th>Eff.</th>
     {% endif %}
     {% if reduce.ac and full_detail %}
@@ -209,13 +209,13 @@
         {% endif %}
         <td>{{entry.zone_name}}</td>
         <td>{{entry.npc_name}}</td>
-        {% if show_dmg_delay and full_detail %}
+        {% if show_dmg_delay %}
             <td>{{entry.damage}}</td>
         {% endif %}
-        {% if show_dmg_delay and full_detail %}
+        {% if show_dmg_delay %}
             <td>{{entry.delay}}</td>
         {% endif %}
-        {% if show_dmg_delay and full_detail %}
+        {% if show_dmg_delay %}
             <td>{{entry.w_eff}}</td>
         {% endif %}
         {% if reduce.ac and full_detail %}

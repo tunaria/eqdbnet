@@ -181,26 +181,23 @@ def get_item_data(item_id, full=False):
     skill_mod = ret_dict['skillmodtype']
     scrolleffect = ret_dict['scrolleffect']
 
+    # An item can reference a spell id that is not in spells_new, e.g. when the spell
+    # file is trimmed after the item data is imported. Indexing an empty result raised
+    # IndexError and returned a 500 for the whole item page, so name it by id instead.
+    def spell_name(spell_id):
+        row = session.query(SpellsNew.name).filter(SpellsNew.id == spell_id).first()
+        return row[0] if row else 'Spell %s' % spell_id
+
     if worn > 0:
-        query = session.query(SpellsNew.name).filter(SpellsNew.id == worn)
-        result = query.all()
-        ret_dict['worn_name'] = result[0][0]
+        ret_dict['worn_name'] = spell_name(worn)
     if proc > 0:
-        query = session.query(SpellsNew.name).filter(SpellsNew.id == proc)
-        result = query.all()
-        ret_dict['proc_name'] = result[0][0]
+        ret_dict['proc_name'] = spell_name(proc)
     if click > 0:
-        query = session.query(SpellsNew.name).filter(SpellsNew.id == click)
-        result = query.all()
-        ret_dict['click_name'] = utils.check_sympathetic(result[0][0])
+        ret_dict['click_name'] = utils.check_sympathetic(spell_name(click))
     if focus > 0:
-        query = session.query(SpellsNew.name).filter(SpellsNew.id == focus)
-        result = query.all()
-        ret_dict['focus_name'] = result[0][0]
+        ret_dict['focus_name'] = spell_name(focus)
     if inst > 0:
-        query = session.query(SpellsNew.name).filter(SpellsNew.id == inst)
-        result = query.all()
-        ret_dict['inst_name'] = result[0][0]
+        ret_dict['inst_name'] = spell_name(inst)
     if banebody > 0:
         ret_dict['bane_body_name'] = utils.get_bane_dmg_body(banebody)
         ret_dict['bane_body_amount'] = ret_dict['banedmgamt']
