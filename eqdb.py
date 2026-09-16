@@ -469,7 +469,7 @@ def item_search():
         request.form['g_class_3'] == 'None' and
         request.form['g_slot'] == 'None' and
         request.form['i_type'] == 'None' and
-        request.form['spell_type'] == '' and
+        ('spell_type' not in request.form or ('spell_type' in request.form and request.form['spell_type'] == '')) and
         'pet_search' not in data):
         flash('Must request a slot, class, item type other than all, or focus effect, or select Search for Pet Items')
         return redirect(url_for('error'))
@@ -562,7 +562,7 @@ def item_search():
                     if 'proc_level' in data:
                         if int(data['proc_level']) > 0:
                             filters.update({'proclevel2': data['proc_level']})
-    if data['proc_type'] != 'None':
+    if 'proc_type' in data and data['proc_type'] != 'None':
         filters.update({'proc_type': data['proc_type']})
         show_proc = True
 
